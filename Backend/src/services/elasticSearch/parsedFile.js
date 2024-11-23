@@ -64,7 +64,7 @@ class ParsedFile extends EsIndex {
     if (name) {
       query.bool.must.push({
         term: {
-          fileName: name,
+          id: name,
         },
       });
     }
@@ -82,7 +82,7 @@ class ParsedFile extends EsIndex {
               {
                 wildcard: {
                   text: {
-                    value: `*${searchWord}*`,
+                    value: `*${searchWord.toLowerCase()}*`,
                     boost: 1.0,
                     rewrite: "constant_score",
                   },
@@ -90,8 +90,8 @@ class ParsedFile extends EsIndex {
               },
               {
                 wildcard: {
-                  fileName: {
-                    value: `*${searchWord}*`,
+                  id: {
+                    value: `*${searchWord.toLowerCase()}*`,
                     boost: 1.0,
                     rewrite: "constant_score",
                   },

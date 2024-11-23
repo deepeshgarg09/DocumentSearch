@@ -9,6 +9,10 @@ import {
   Grid,
   Paper,
   Link,
+  Backdrop,
+  CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 
@@ -16,22 +20,47 @@ const App = () => {
   const [searchText, setSearchText] = useState("");
   const [documents, setDocuments] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   const handleSearch = async () => {
     if (!searchText.trim()) {
       setError("Please enter some text to search.");
+      setSnackbar({
+        open: true,
+        message: "Search term cannot be empty!",
+        severity: "error",
+      });
       return;
     }
     setError("");
+
+    setLoading(true);
 
     try {
       const response = await axios.get(
         `https://documentsearch-82cw.onrender.com/parseFile/search?text=${searchText}`
       );
       setDocuments(response.data.data);
+      setSnackbar({
+        open: true,
+        message: `Found ${response.data.data.length} documents!`,
+        severity: "success",
+      });
     } catch (err) {
       console.error("Error fetching documents:", err);
       setError("Error fetching documents. Please try again.");
+      setSnackbar({
+        open: true,
+        message: "Error fetching documents!",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -140,6 +169,28 @@ const App = () => {
             No results found. Try searching for something else.
           </Typography>
         )}
+
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            sx={{ width: "100%" }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );
