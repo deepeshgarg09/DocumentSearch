@@ -1,0 +1,11 @@
+{
+  "appName": "file-search",
+  "env": {
+    "isProduction": true
+  },
+  "server": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "defaultDownloadPath": "/downloads"
+}
