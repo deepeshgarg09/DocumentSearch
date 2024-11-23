@@ -1,8 +1,7 @@
 const EsIndex = require("./esIndex");
-const {
-  s3: { bucketName },
-} = require("config");
 const defaultIndex = "parsedfile";
+
+const bucketName = process.env.S3_BUCKET_NAME;
 
 const defaultMapping = {
   text: {
