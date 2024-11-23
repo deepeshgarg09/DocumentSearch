@@ -26,7 +26,7 @@ const App = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/parseFile/search?text=${searchText}`
+        `https://documentsearch-82cw.onrender.com/parseFile/search?text=${searchText}`
       );
       setDocuments(response.data.data);
     } catch (err) {
