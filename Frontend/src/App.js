@@ -42,8 +42,9 @@ const App = () => {
     setLoading(true);
 
     try {
+      let encodedSearchText = encodeURIComponent(searchText);
       const response = await axios.get(
-        `https://documentsearch-82cw.onrender.com/parseFile/search?text=${searchText}`
+        `https://documentsearch-82cw.onrender.com/parseFile/search?text=${encodedSearchText}`
       );
       setDocuments(response.data.data);
       setSnackbar({
