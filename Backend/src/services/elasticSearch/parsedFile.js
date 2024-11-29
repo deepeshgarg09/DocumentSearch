@@ -76,6 +76,9 @@ class ParsedFile extends EsIndex {
         .split(/[\.\-_ ]/);
 
       searchWords.forEach((searchWord) => {
+        if (searchWord === "&") {
+          return;
+        }
         query.bool.must.push({
           bool: {
             should: [
